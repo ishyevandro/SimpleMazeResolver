@@ -1,0 +1,77 @@
+<?php
+
+use IshyEvandro\Maze;
+
+Class MazeTest extends PHPUnit_Framework_TestCase
+{
+    public $Maze;
+    public $FileContent;
+    
+    public function setUp()
+    {
+        $this->Maze = new Maze();
+        $this->FileContent = file_get_contents(__DIR__."/files/four.txt");
+    }
+
+    public function testSetSizeShouldReturnTrueWhenIntegerGreaterThanZeroPassed()
+    {
+        $this->assertTrue($this->Maze->setSize(2));
+    }
+
+    public function testSetSizeShouldReturnFalseWhenZeroPassed()
+    {
+        $this->assertFalse($this->Maze->setSize(0));
+    }
+
+    public function testSetSizeShouldReturnFalseWhenFloatPassed()
+    {
+        $this->assertFalse($this->Maze->setSize(1.1));
+    }
+
+    public function testSetSizeShouldReturnFalseWhenStringPassed()
+    {
+        $this->assertFalse($this->Maze->setSize("asd"));
+    }
+
+    public function testCreateShouldReturnTrueWhenSizeWasSetted()
+    {
+        $this->Maze->setSize(4);
+        $this->assertTrue($this->Maze->create($this->FileContent));
+    }
+
+    public function testCreateShouldReturnFalseWhenSizeNotSetted()
+    {
+        try
+        {
+            $this->Maze->create($this->FileContent);
+            $this->assertTrue(False);
+        }
+        catch(\Exception $e)
+        {
+            $this->assertTrue(True);
+            $this->assertEquals("Size cant be zero", $e->getMessage());
+        }
+    }
+
+    public function testCreateShouldReturnFalseWhenSizeOfResourceNotMatchWithMazeSize()
+    {
+        try
+        {
+            $this->Maze->setSize(4);
+            $this->Maze->create($this->FileContent."asd");
+            $this->assertTrue(False);
+        }
+        catch(\Exception $e)
+        {
+            $this->assertTrue(True);
+            $this->assertEquals("Resource size not match with maze size", $e->getMessage());
+        }
+    }
+
+    public function testGetShouldReturnMatrix()
+    {
+        $this->Maze->setSize(4);
+        $this->Maze->create($this->FileContent);
+        $this->assertEquals([['S',1,1,'F'],[0,1,1,0],[0,1,1,0], [0,0,0,0]], $this->Maze->get());
+    }
+}
