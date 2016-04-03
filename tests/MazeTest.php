@@ -74,4 +74,51 @@ Class MazeTest extends PHPUnit_Framework_TestCase
         $this->Maze->create($this->FileContent);
         $this->assertEquals([['S',1,1,'F'],[0,1,1,0],[0,1,1,0], [0,0,0,0]], $this->Maze->get());
     }
+
+    public function testGetStartPositionShouldReturnArray()
+    {
+        $this->Maze->setSize(4);
+        $this->Maze->create($this->FileContent);
+        $this->assertEquals([0,0], $this->Maze->getStartPosition());
+    }
+
+    public function testGetFinishPositionShouldReturnArray()
+    {
+        $this->Maze->setSize(4);
+        $this->Maze->create($this->FileContent);
+        $this->assertEquals([0,3], $this->Maze->getFinishPosition());
+    }
+
+    public function testGetStartPositionShouldThrowException()
+    {
+        $this->Maze->setSize(4);
+        $this->Maze->create(file_get_contents(__DIR__.'/files/four_err.txt'));
+        try
+        {
+            $this->Maze->getStartPosition();
+            $this->assertEquals("Should not enter here", "");
+        }
+        catch (\Exception $e)
+        {
+            $this->assertTrue(True);
+            $this->assertEquals('Start position not found', $e->getMessage());
+        }
+    
+    }
+
+    public function testGetFinishPositionShouldThrowException()
+    {
+        $this->Maze->setSize(4);
+        $this->Maze->create(file_get_contents(__DIR__.'/files/four_err.txt'));
+        try
+        {
+            $this->Maze->getFinishPosition();
+            $this->assertEquals("Should not enter here", "");
+        }
+        catch (\Exception $e)
+        {
+            $this->assertTrue(True);
+            $this->assertEquals('Finish position not found', $e->getMessage());
+        }
+    }
 }
