@@ -56,5 +56,4 @@ Class AgentTest extends PHPUnit_Framework_TestCase
             ], $this->Agent->pathToGoal()
         );
     }
-
 }

@@ -126,5 +126,5 @@ Class Agent
         $this->lastPosition = $this->currentPosition;
         $this->currentPosition = [$x, $y];
     }
-
+    
 }
