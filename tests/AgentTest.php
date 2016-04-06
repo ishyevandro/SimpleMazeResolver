@@ -91,7 +91,17 @@ Class AgentTest extends PHPUnit_Framework_TestCase
                 [0,2]
             ], $this->Agent->pathToGoal()
         );
+    }
 
+    public function testcheckGoalShouldReturnNegativeNumber()
+    {
+        $resource = "S11F111111111111";
+        $this->initElements($resource);
+        $this->Agent->init();
+        while($this->Agent->checkGoal() === 0)
+            $this->assertFalse($this->Agent->Walk());
+        $this->assertEquals(-1, $this->Agent->checkGoal());
+        $this->assertEquals("Not found a path to goal", $this->Agent->getMessage());
     }
 
     protected function initElements($resource)

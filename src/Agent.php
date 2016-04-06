@@ -53,6 +53,11 @@ Class Agent
         return array_merge($this->path, [$this->currentPosition]);
     }
 
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
     private function walkLeft()
     {
         list($x,$y) = $this->getPosition(0,-1);
@@ -111,6 +116,7 @@ Class Agent
             $this->Goal = 1;
             return True;
         }
+        
         if($this->maze[$x][$y] == 0)
             return True;
 
