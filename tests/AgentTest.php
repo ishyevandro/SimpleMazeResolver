@@ -49,7 +49,7 @@ Class AgentTest extends PHPUnit_Framework_TestCase
                 [2,3],
                 [1,3],
                 [0,3]
-            ], $this->Agent->pathToGoal()
+            ], $this->Agent->getPathToGoal()
         );
     }
 
@@ -68,7 +68,7 @@ Class AgentTest extends PHPUnit_Framework_TestCase
                 [0,0],
                 [1,0],
                 [1,1]
-            ], $this->Agent->pathToGoal()
+            ], $this->Agent->getPathToGoal()
         );
     }
 
@@ -89,7 +89,7 @@ Class AgentTest extends PHPUnit_Framework_TestCase
                 [1,1],
                 [1,2],
                 [0,2]
-            ], $this->Agent->pathToGoal()
+            ], $this->Agent->getPathToGoal()
         );
     }
 
@@ -102,6 +102,20 @@ Class AgentTest extends PHPUnit_Framework_TestCase
             $this->assertFalse($this->Agent->Walk());
         $this->assertEquals(-1, $this->Agent->checkGoal());
         $this->assertEquals("Not found a path to goal", $this->Agent->getMessage());
+    }
+
+    public function testPrintResult()
+    {
+        $resource = file_get_contents(__DIR__.'/files/four_mult_path.txt');
+        $this->initElements($resource);
+        $this->Agent->init();
+        while($this->Agent->checkGoal() === 0)
+            $this->Agent->Walk();
+
+        $this->assertEquals(
+            "#1#1\n###0\n0100\n1001\n",
+            $this->Agent->printResult()
+        );
     }
 
     protected function initElements($resource)

@@ -48,7 +48,7 @@ Class Agent
         return $this->Goal;
     }
 
-    public function pathToGoal()
+    public function getPathToGoal()
     {
         return array_merge($this->path, [$this->currentPosition]);
     }
@@ -56,6 +56,28 @@ Class Agent
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function printResult()
+    {
+        $result = $this->Maze->get();
+        $path = $this->getPathToGoal();
+        $pathSize = count($path);
+        for($i=0;$i< $pathSize; $i++)
+        {
+            list($x, $y) = $path[$i];
+            $result[$x][$y] = '#';
+        }
+
+        $lines = count($result);
+        $solved = '';
+        
+        for($i=0; $i < $lines; $i++)
+        {
+            $solved .= implode('',$result[$i]);
+            $solved .= "\n";
+        }
+        return $solved;
     }
 
     private function walkLeft()
