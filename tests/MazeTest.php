@@ -15,27 +15,27 @@ Class MazeTest extends PHPUnit_Framework_TestCase
 
     public function testSetSizeShouldReturnTrueWhenIntegerGreaterThanZeroPassed()
     {
-        $this->assertTrue($this->Maze->setSize(2));
+        $this->assertTrue($this->Maze->setSize(2,2));
     }
 
     public function testSetSizeShouldReturnFalseWhenZeroPassed()
     {
-        $this->assertFalse($this->Maze->setSize(0));
+        $this->assertFalse($this->Maze->setSize(0,0));
     }
 
     public function testSetSizeShouldReturnFalseWhenFloatPassed()
     {
-        $this->assertFalse($this->Maze->setSize(1.1));
+        $this->assertFalse($this->Maze->setSize(1.1, 0));
     }
 
     public function testSetSizeShouldReturnFalseWhenStringPassed()
     {
-        $this->assertFalse($this->Maze->setSize("asd"));
+        $this->assertFalse($this->Maze->setSize("asd", 0));
     }
 
     public function testCreateShouldReturnTrueWhenSizeWasSetted()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->assertTrue($this->Maze->create($this->FileContent));
     }
 
@@ -57,7 +57,7 @@ Class MazeTest extends PHPUnit_Framework_TestCase
     {
         try
         {
-            $this->Maze->setSize(4);
+            $this->Maze->setSize(4, 4);
             $this->Maze->create($this->FileContent."asd");
             $this->assertTrue(False);
         }
@@ -70,28 +70,28 @@ Class MazeTest extends PHPUnit_Framework_TestCase
 
     public function testGetShouldReturnMatrix()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create($this->FileContent);
         $this->assertEquals([['S',1,1,'F'],[0,1,1,0],[0,1,1,0], [0,0,0,0]], $this->Maze->get());
     }
 
     public function testGetStartPositionShouldReturnArray()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create($this->FileContent);
         $this->assertEquals([0,0], $this->Maze->getStartPosition());
     }
 
     public function testGetFinishPositionShouldReturnArray()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create($this->FileContent);
         $this->assertEquals([0,3], $this->Maze->getFinishPosition());
     }
 
     public function testGetStartPositionShouldThrowException()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create(file_get_contents(__DIR__.'/files/four_err.txt'));
         try
         {
@@ -108,7 +108,7 @@ Class MazeTest extends PHPUnit_Framework_TestCase
 
     public function testGetFinishPositionShouldThrowException()
     {
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create(file_get_contents(__DIR__.'/files/four_err.txt'));
         try
         {

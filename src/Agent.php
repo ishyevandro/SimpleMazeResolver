@@ -125,7 +125,7 @@ Class Agent
         if($positionX < 0 || $positionY < 0)
             return [-1, -1];
 
-        if($positionX >= $this->mazeSize || $positionY >= $this->mazeSize)
+        if($positionX >= $this->mazeSize[0] || $positionY >= $this->mazeSize[1])
             return [-1,-1];
 
         return [$positionX, $positionY];
@@ -170,7 +170,10 @@ Class Agent
         }
         $this->maze[$this->currentPosition[0]][$this->currentPosition[1]] = 1;
         $this->currentPosition = array_pop($this->path);
-        $this->lastPosition = $this->path[(count($this->path)-1)];
+        if(empty($this->path))
+            $this->lastPosition = [-1,-1];
+        else
+            $this->lastPosition = $this->path[(count($this->path)-1)];
         return True;
     }
 

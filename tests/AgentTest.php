@@ -121,7 +121,7 @@ Class AgentTest extends PHPUnit_Framework_TestCase
     protected function initElements($resource)
     {
         $this->Maze = new Maze();
-        $this->Maze->setSize(4);
+        $this->Maze->setSize(4, 4);
         $this->Maze->create($resource);
         $this->Agent = new Agent($this->Maze);
     }
