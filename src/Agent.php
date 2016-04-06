@@ -10,7 +10,8 @@ Class Agent
     public $currentPosition = [];
     public $lastPosition = [-1,-1];
     public $path = [];
-    public $Goal = false;
+    public $Goal = 0;
+
     public function __construct(Maze $maze)
     {
         $this->Maze = $maze;
@@ -18,12 +19,11 @@ Class Agent
 
     public function walk()
     {
-        if($this->walkLeft()  || 
-           $this->walkRight() || 
-           $this->walkDown()  || 
-           $this->walkUp())
+        if($this->walkLeft() || $this->walkRight() || 
+           $this->walkDown() || $this->walkUp())
             return True;
 
+        $this->goBack();
         return False;
     }
 
@@ -43,6 +43,11 @@ Class Agent
         return True;
     }
 
+    public function checkGoal()
+    {
+        return $this->Goal;
+    }
+
     public function pathToGoal()
     {
         return array_merge($this->path, [$this->currentPosition]);
@@ -50,25 +55,25 @@ Class Agent
 
     private function walkLeft()
     {
-        list($x,$y) = $this->getPosition(-1,0);
+        list($x,$y) = $this->getPosition(0,-1);
         $this->tryWalk($x, $y);
     }
 
     private function walkRight()
     {
-        list($x,$y) = $this->getPosition(1,0);
+        list($x,$y) = $this->getPosition(0,1);
         return $this->tryWalk($x, $y);    
     }
 
     private function walkUp()
     {
-        list($x,$y) = $this->getPosition(0,-1);
+        list($x,$y) = $this->getPosition(-1,0);
         return $this->tryWalk($x, $y);
     }
 
     private function walkDown()
     {
-        list($x,$y) = $this->getPosition(0, 1);
+        list($x,$y) = $this->getPosition(1,0);
         return $this->tryWalk($x, $y);
     }
 
@@ -77,7 +82,7 @@ Class Agent
         if($x < 0)
             return False;
 
-        if($this->positionOpen($x, $y) && $this->notLastPosition($x, $y))
+        if($this->positionOpen($x, $y) && $this->notLastPosition($x, $y) && !$this->walkedPosition($x, $y))
         {
             $this->newPosition($x, $y);
             return True; 
@@ -103,7 +108,7 @@ Class Agent
     {
         if($this->maze[$x][$y] == 'F')
         {
-            $this->Goal = True;
+            $this->Goal = 1;
             return True;
         }
         if($this->maze[$x][$y] == 0)
@@ -127,4 +132,25 @@ Class Agent
         $this->currentPosition = [$x, $y];
     }
     
+    private function goBack()
+    {
+        if(empty($this->path))
+        {
+            $this->Goal = -1;
+            $this->message = "Not found a path to goal";
+            return False;
+        }
+        $this->maze[$this->currentPosition[0]][$this->currentPosition[1]] = 1;
+        $this->currentPosition = array_pop($this->path);
+        $this->lastPosition = $this->path[(count($this->path)-1)];
+        return True;
+    }
+
+    private function walkedPosition($x, $y)
+    {
+        if(in_array([$x,$y], $this->path))
+            return True;
+
+        return False;
+    }
 }

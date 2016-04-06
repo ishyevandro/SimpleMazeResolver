@@ -10,10 +10,8 @@ Class AgentTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $this->Maze = new Maze();
-        $this->Maze->setSize(4);
-        $this->Maze->create(file_get_contents(__DIR__.'/files/four.txt'));
-        $this->Agent = new Agent($this->Maze);
+        $resource = file_get_contents(__DIR__.'/files/four.txt');
+        $this->initElements($resource);
     }
 
     public function testSetStartAndFinishShouldReturnTrue()
@@ -36,11 +34,9 @@ Class AgentTest extends PHPUnit_Framework_TestCase
     public function testWalkShouldGoToGoal()
     {
         $this->Agent->init();
-        for($i = 0; $i < 16; $i++)
-        {
-            $this->Agent->walk();   
-        }
-        $this->assertTrue($this->Agent->Goal);
+        while($this->Agent->checkGoal() === 0)
+            $this->Agent->walk();
+        $this->assertEquals(1,$this->Agent->checkGoal());
         $this->assertEquals(
             [
                 [0,0],
@@ -55,5 +51,54 @@ Class AgentTest extends PHPUnit_Framework_TestCase
                 [0,3]
             ], $this->Agent->pathToGoal()
         );
+    }
+
+    public function testWalkShouldGoToGoalWhenHaveWrongPossiblePath()
+    {
+        $resource = file_get_contents(__DIR__.'/files/four_mult_path.txt');
+        $this->initElements($resource);
+        $this->Agent->init();
+        for($i=0; $i < 2; $i++)
+        {
+            $this->Agent->walk();
+        }
+
+        $this->assertEquals(
+            [
+                [0,0],
+                [1,0],
+                [1,1]
+            ], $this->Agent->pathToGoal()
+        );
+    }
+
+    public function testWalkShouldGoToGoalWithoutCrossAWalkedPath()
+    {
+        $resource = file_get_contents(__DIR__.'/files/four_mult_path.txt');
+        $this->initElements($resource);
+        $this->Agent->init();
+        while($this->Agent->checkGoal() === 0)
+        {
+            $this->Agent->walk();
+        }
+
+        $this->assertEquals(
+            [
+                [0,0],
+                [1,0],
+                [1,1],
+                [1,2],
+                [0,2]
+            ], $this->Agent->pathToGoal()
+        );
+
+    }
+
+    protected function initElements($resource)
+    {
+        $this->Maze = new Maze();
+        $this->Maze->setSize(4);
+        $this->Maze->create($resource);
+        $this->Agent = new Agent($this->Maze);
     }
 }
