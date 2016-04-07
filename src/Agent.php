@@ -53,6 +53,11 @@ Class Agent
         return array_merge($this->path, [$this->currentPosition]);
     }
 
+    public function getMaze()
+    {
+        return $this->maze;
+    }
+
     public function getMessage()
     {
         return $this->message;
@@ -83,7 +88,7 @@ Class Agent
     private function walkLeft()
     {
         list($x,$y) = $this->getPosition(0,-1);
-        $this->tryWalk($x, $y);
+        return $this->tryWalk($x, $y);
     }
 
     private function walkRight()
@@ -122,6 +127,7 @@ Class Agent
     {
         $positionX = $this->currentPosition[0]+$x;
         $positionY = $this->currentPosition[1]+$y;
+
         if($positionX < 0 || $positionY < 0)
             return [-1, -1];
 
@@ -168,10 +174,12 @@ Class Agent
             $this->message = "Not found a path to goal";
             return False;
         }
-        $this->maze[$this->currentPosition[0]][$this->currentPosition[1]] = 1;
+        $this->maze[$this->currentPosition[0]][$this->currentPosition[1]] = 2;
         $this->currentPosition = array_pop($this->path);
         if(empty($this->path))
+        {
             $this->lastPosition = [-1,-1];
+        }
         else
             $this->lastPosition = $this->path[(count($this->path)-1)];
         return True;
