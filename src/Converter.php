@@ -6,12 +6,9 @@ Class Converter
 {
     public function createTextFromImage()
     {
-        $imagePath = __DIR__.'/../tests/files/tentativa_2.png';
+        $imagePath = __DIR__.'/../storage/tentativa_2.png';
         list($x, $y) = getimagesize($imagePath);
 
-        /*echo $x . " " . $y;
-        die();
-        */
         $image = imagecreatefrompng($imagePath);
 
         for($i = 0; $i < $x; $i++)
@@ -37,13 +34,14 @@ Class Converter
             $string .= "\n";
         }
 
-        file_put_contents(__DIR__.'/../tests/files/tentativa.txt', $string);
+        file_put_contents(__DIR__.'/../storage/tentativa_2.txt', $string);
     }
 
-    public function createImageFromText()
+    public function createImageFromText($path, $in, $out)
     {
-        $fileGetContent = file_get_contents(__DIR__.'/../tests/files/resultado.txt');
+        $fileGetContent = file_get_contents($path.$in);
         $fileGetContent = str_replace("\n", "", $fileGetContent);
+
         $image = imagecreatetruecolor(402, 399);
         $fileGetContent = str_split($fileGetContent);
         $x = 401;
@@ -71,9 +69,6 @@ Class Converter
                     imagesetpixel($image, $i, $h, $red);
             }
         }
-        imagepng($image, __DIR__.'/../tests/files/resultado.png');
+        imagepng($image, $path.$out);
     }
 }    
-
-$test = new Converter();
-$test->createImageFromText();

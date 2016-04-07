@@ -19,8 +19,8 @@ Class Agent
 
     public function walk()
     {
-        if($this->walkLeft() || $this->walkRight() || 
-           $this->walkDown() || $this->walkUp())
+        if($this->walkDirection(0,-1) || $this->walkDirection(0,1) || 
+           $this->walkDirection(-1,0) || $this->walkDirection(1,0))
             return True;
 
         $this->goBack();
@@ -85,29 +85,12 @@ Class Agent
         return $solved;
     }
 
-    private function walkLeft()
+    private function walkDirection($directionX, $directionY)
     {
-        list($x,$y) = $this->getPosition(0,-1);
+        list($x,$y) = $this->getPosition($directionX,$directionY);
         return $this->tryWalk($x, $y);
     }
 
-    private function walkRight()
-    {
-        list($x,$y) = $this->getPosition(0,1);
-        return $this->tryWalk($x, $y);    
-    }
-
-    private function walkUp()
-    {
-        list($x,$y) = $this->getPosition(-1,0);
-        return $this->tryWalk($x, $y);
-    }
-
-    private function walkDown()
-    {
-        list($x,$y) = $this->getPosition(1,0);
-        return $this->tryWalk($x, $y);
-    }
 
     private function tryWalk($x, $y)
     {
