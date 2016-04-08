@@ -5,7 +5,9 @@ use IshyEvandro\Agent;
 use IshyEvandro\Maze;
 use IshyEvandro\Converter;
 
-$resource = file_get_contents(__DIR__.'/storage/tentativa.txt');
+$defaultPath = __DIR__.'/storage/';
+
+$resource = file_get_contents($defaultPath . 'tentativa.txt');
 
 $maze = new Maze();
 $maze->setSize(401, 398);
@@ -28,10 +30,10 @@ if($agent->checkGoal() < 0) {
     {
         $string .= implode("", $line) . "\n";
     }
-    file_put_contents(__DIR__.'/storage/error.txt', $string);
+    file_put_contents($defaultPath . 'not_found.txt', $string);
     exit(1);
 }
 
-file_put_contents(__DIR__.'/storage/resultado.txt', $agent->printResult());
+file_put_contents($defaultPath . 'resultado.txt', $agent->printResult());
 $resultConverter = new Converter();
-$resultConverter->createImageFromText(__DIR__.'/storage/', 'resultado.txt', 'resultado.png');
+$resultConverter->createImageFromText($defaultPath, 'resultado.txt', 'resultado.png', [401, 398]);

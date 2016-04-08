@@ -4,18 +4,19 @@ namespace IshyEvandro;
 
 Class Converter
 {
-    public function createTextFromImage()
+    public function createTextFromImage($path, $in, $out)
     {
-        $imagePath = __DIR__.'/../storage/tentativa_2.png';
-        list($x, $y) = getimagesize($imagePath);
+        $imagePath = $path.$in;
+        if(!file_exists($imagePath))
+            return False;
 
+        list($x, $y) = getimagesize($imagePath);
         $image = imagecreatefrompng($imagePath);
 
         for($i = 0; $i < $x; $i++)
         {
             for($h = $y-1; $h >= 0; $h--)
             {
-                $elementos[imagecolorat($image, $i, $h)] = 0;
                 if(imagecolorat($image, $i, $h) == 0)
                     $elemento[$i][$h] = 1;
                 elseif(imagecolorat($image, $i, $h) == 16711680)
@@ -34,30 +35,35 @@ Class Converter
             $string .= "\n";
         }
 
-        file_put_contents(__DIR__.'/../storage/tentativa_2.txt', $string);
+        file_put_contents($path.$out, $string);
+        return True;
     }
 
-    public function createImageFromText($path, $in, $out)
+    public function createImageFromText($path, $in, $out, $size)
     {
+        if(!file_exists($path.$in) || count($size) < 2 || !is_array($size))
+            return False;
+
         $fileGetContent = file_get_contents($path.$in);
         $fileGetContent = str_replace("\n", "", $fileGetContent);
 
-        $image = imagecreatetruecolor(402, 399);
         $fileGetContent = str_split($fileGetContent);
-        $x = 401;
-        $y = 398;
+        $x = $size[0];
+        $y = $size[1];
+
         $matrix = array_chunk($fileGetContent, $y);
 
         foreach($matrix as $line)
-        {
             $correctMatrix[] = array_reverse($line); 
-        }
+        
         $matrix = array_reverse($correctMatrix);
+        unset($correctMatrix);
 
+        $image = imagecreatetruecolor($x, $y);
         $black = imagecolorallocate($image, 0, 0, 0);
         $white = imagecolorallocate($image, 255, 255, 255);
         $red = imagecolorallocate($image, 255, 0, 0);
-        for($i=0;$i< $x;$i++)
+        for($i=0;$i < $x;$i++)
         {
             for($h = 0; $h < $y; $h++)
             {
@@ -70,5 +76,6 @@ Class Converter
             }
         }
         imagepng($image, $path.$out);
+        return True;
     }
-}    
+}

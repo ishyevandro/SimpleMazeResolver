@@ -104,6 +104,24 @@ Class AgentTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("Not found a path to goal", $this->Agent->getMessage());
     }
 
+    public function testGoBackWithPathEmpty()
+    {
+        $resource = "S1F010111";
+        $this->initElements($resource, 3);
+        $this->Agent->init();
+        
+        while($this->Agent->checkGoal()===0)
+            $this->Agent->walk();
+
+        $this->assertEquals(-1, $this->Agent->checkGoal());
+        $this->assertEquals([
+                ["S", "1", "F"],
+                ["2", "1", "0"],
+                ["1", "1", "1"]
+            ], 
+            $this->Agent->getMaze());
+    }
+
     public function testPrintResult()
     {
         $resource = file_get_contents(__DIR__.'/files/four_mult_path.txt');
@@ -118,10 +136,10 @@ Class AgentTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    protected function initElements($resource)
+    protected function initElements($resource, $size=4)
     {
         $this->Maze = new Maze();
-        $this->Maze->setSize(4, 4);
+        $this->Maze->setSize($size, $size);
         $this->Maze->create($resource);
         $this->Agent = new Agent($this->Maze);
     }
