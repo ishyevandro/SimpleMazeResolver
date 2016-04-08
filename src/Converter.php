@@ -37,7 +37,6 @@ Class Converter
         }
 
         $string = '';
-
         $elemento = array_reverse($elemento);
         foreach($elemento as $line)
         {
@@ -68,7 +67,6 @@ Class Converter
 
         $fileGetContent = file_get_contents($path.$in);
         $fileGetContent = str_replace("\n", "", $fileGetContent);
-
         $fileGetContent = str_split($fileGetContent);
         $x = $size[0];
         $y = $size[1];

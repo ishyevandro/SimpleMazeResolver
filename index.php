@@ -11,12 +11,10 @@ $resource = file_get_contents($defaultPath . 'tentativa.txt');
 
 $maze = new Maze();
 $maze->setSize(401, 398);
-
 $maze->create($resource);
 
 $agent = new Agent($maze);
 $agent->init();
-
 while($agent->checkGoal() === 0)
 {
     $agent->walk();
@@ -27,9 +25,8 @@ if($agent->checkGoal() < 0) {
     $maze = $agent->getMaze();
     $string = '';
     foreach($maze as $line)
-    {
         $string .= implode("", $line) . "\n";
-    }
+
     file_put_contents($defaultPath . 'not_found.txt', $string);
     exit(1);
 }

@@ -41,6 +41,7 @@ Class Maze
         $resource = str_replace("\n", "", $resource);
         if($this->sizex == 0 || $this->sizey == 0)
             throw new \Exception("Size cant be zero");
+
         if(strlen($resource) != ($this->sizex * $this->sizey))
             throw new \Exception("Resource size not match with maze size");
 
@@ -86,6 +87,7 @@ Class Maze
 
         if($start === false)
             throw new \Exception("Start position not found");
+
         return [$x, $start];
     }
 
@@ -107,6 +109,7 @@ Class Maze
 
         if($finish === false)
             throw new \Exception("Finish position not found");
+
         return [$x, $finish];
     }
 

@@ -109,6 +109,7 @@ Class Agent
         $result = $this->Maze->get();
         $path = $this->getPathToGoal();
         $pathSize = count($path);
+
         for($i=0;$i< $pathSize; $i++)
         {
             list($x, $y) = $path[$i];
@@ -123,6 +124,7 @@ Class Agent
             $solved .= implode('',$result[$i]);
             $solved .= "\n";
         }
+
         return $solved;
     }
 
@@ -253,14 +255,14 @@ Class Agent
             $this->message = "Not found a path to goal";
             return false;
         }
+
         $this->maze[$this->currentPosition[0]][$this->currentPosition[1]] = 2;
         $this->currentPosition = array_pop($this->path);
         if(empty($this->path))
-        {
             $this->lastPosition = [-1,-1];
-        }
         else
             $this->lastPosition = $this->path[(count($this->path)-1)];
+
         return true;
     }
 
