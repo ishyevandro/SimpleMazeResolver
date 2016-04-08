@@ -4,11 +4,21 @@ namespace IshyEvandro;
 
 Class Converter
 {
+
+    /**
+     * Convert an image to text file. need to be three colors in image(black, white, red)
+     *
+     * @param string $path
+     * @param string $in
+     * @param string $out
+     *
+     * @return boolean
+     */
     public function createTextFromImage($path, $in, $out)
     {
         $imagePath = $path.$in;
         if(!file_exists($imagePath))
-            return False;
+            return false;
 
         list($x, $y) = getimagesize($imagePath);
         $image = imagecreatefrompng($imagePath);
@@ -36,13 +46,25 @@ Class Converter
         }
 
         file_put_contents($path.$out, $string);
-        return True;
+        return true;
     }
 
+    /**
+     * Convert a text to image need to be 3 types of char
+     * [ 0 => 'white' ]
+     * [ 1 => 'black' ]
+     * [anything => 'red']
+     *
+     * @param string $path
+     * @param string $in
+     * @param string $out
+     *
+     * @return boolean
+     */
     public function createImageFromText($path, $in, $out, $size)
     {
         if(!file_exists($path.$in) || count($size) < 2 || !is_array($size))
-            return False;
+            return false;
 
         $fileGetContent = file_get_contents($path.$in);
         $fileGetContent = str_replace("\n", "", $fileGetContent);
@@ -63,6 +85,7 @@ Class Converter
         $black = imagecolorallocate($image, 0, 0, 0);
         $white = imagecolorallocate($image, 255, 255, 255);
         $red = imagecolorallocate($image, 255, 0, 0);
+        
         for($i=0;$i < $x;$i++)
         {
             for($h = 0; $h < $y; $h++)
@@ -75,7 +98,8 @@ Class Converter
                     imagesetpixel($image, $i, $h, $red);
             }
         }
+        
         imagepng($image, $path.$out);
-        return True;
+        return true;
     }
 }
