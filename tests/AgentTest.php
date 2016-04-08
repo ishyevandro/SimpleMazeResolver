@@ -14,11 +14,6 @@ Class AgentTest extends PHPUnit_Framework_TestCase
         $this->initElements($resource);
     }
 
-    public function testSetStartAndFinishShouldReturnTrue()
-    {
-        $this->assertTrue($this->Agent->checkStartAndFinish());
-    }
-
     public function testInitShouldReturnFirstPosition()
     {
         $this->assertEquals([0,0],$this->Agent->init());
