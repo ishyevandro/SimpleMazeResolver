@@ -1,9 +1,16 @@
 # Maze resolver in PHP
 
-A projected created to solve a maze with PHP.
+A project created to solve a maze with PHP.
 
-Maze to solve - storage/tentativa_2.png
-Maze solved - storage/resultado.png
+Maze to solve: 
+
+  storage/tentativa_2.png
+  ![alt tag](https://raw.githubusercontent.com/ishyevandro/simple-maze-resolver/master/storage/tentativa_2.png)
+
+Maze solved: 
+
+  storage/resultado.png
+  ![alt tag](https://raw.githubusercontent.com/ishyevandro/simple-maze-resolver/master/storage/resultado.png)
 
 Algorithm:
 
