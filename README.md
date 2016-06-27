@@ -1,11 +1,13 @@
-# Maze solver in PHP
+# Maze resolver in PHP
 
 A projected created to solve a maze with PHP.
 
 Maze to solve - storage/tentativa_2.png
 Maze solved - storage/resultado.png
 
-Algorithm... Brute... B R U T E... force.
+Algorithm:
+
+  Brute... B R U T E... force.
 
 Some infos:
   The first image from maze have only three colours.
